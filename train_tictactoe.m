@@ -2,23 +2,28 @@
 % trains it with the assumption the algorithm is going first
 clear all; close all; clc
 
-% constants
+% constants, change as you see fit
 power = 4;
 step = 1e-1;
-threshold = 1e-5;
-max_iter = 1e5;
+threshold = 1e-6;
+max_iter = 1e4;
 
 % get data
 % make sure data is properly formatted
 X = load('ttt-input-x.txt');
 Y = load('ttt-output-x.txt');
-[X, Y] = preprocess(X, Y);
+disp('loaded data');
+
+X = preprocess(X);
+Y = preprocess(Y);
+disp('pre-processed data');
 
 % set aside cross validation data
 
 % polynomials to a power
 pX = map_features(X, power);
 n = size(pX, 2);
+disp('mapped data');
 
 % init values
 corner_a = ones(n , 1);
