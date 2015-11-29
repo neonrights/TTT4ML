@@ -14,6 +14,7 @@ X = load('ttt-input-x.txt');
 Y = load('ttt-output-x.txt');
 disp('loaded data');
 
+% rotating data to increase amount
 X = preprocess(X);
 Y = preprocess(Y);
 disp('pre-processed data');
@@ -22,6 +23,9 @@ disp('pre-processed data');
 
 % polynomials to a power
 pX = map_features(X, power);
+
+% adding constant
+pX = [ones(size(pX, 1), 1) pX];
 n = size(pX, 2);
 disp('mapped data');
 
