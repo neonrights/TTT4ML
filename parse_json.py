@@ -35,7 +35,7 @@ with open('tictactoe-ml-export.json') as json_data:
 			for move in raw[game]:
 				if type(raw[game][move]) is list:
 					current = raw[game][move];
-					output_data = [winner * (current[i] - input_data[i]) for i in range(9)];
+					output_data = [(current[i] - input_data[i]) for i in range(9)];
 					
 					# save data
 					if sum(output_data) == 1:
