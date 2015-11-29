@@ -38,7 +38,7 @@ with open('tictactoe-ml-export.json') as json_data:
 					output_data = [(current[i] - input_data[i]) for i in range(9)];
 					
 					# save data
-					if sum(output_data) == 1:
+					if sum(output_data) == winner:
 						if winner == 1:
 							x_input.write(str(input_data)[1:-1] + '\n');
 							x_output.write(str(output_data)[1:-1] + '\n');

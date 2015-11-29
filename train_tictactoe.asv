@@ -11,8 +11,12 @@ max_iter = 1e4;
 
 % get data
 % make sure data is properly formatted
-X = load('ttt-input-x.txt');
-Y = load('ttt-output-x.txt');
+X1 = load('ttt-input-x.txt');
+Y1 = load('ttt-output-x.txt');
+X2 = load('ttt-input-o.txt');
+Y2 = load('ttt-input-o.txt');
+X = [X1; X2];
+Y = [Y1; Y2];
 disp('loaded data');
 
 % rotating data to increase amount
