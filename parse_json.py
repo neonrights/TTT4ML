@@ -1,3 +1,8 @@
+"""
+parses json data from TTT4Data project formatting and recording them
+in a format that can be read by matlab
+"""
+
 import json
 
 # open file and read data
