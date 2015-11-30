@@ -8,6 +8,7 @@ power = 4;
 step = 1e-1;
 threshold = 1e-6;
 max_iter = 1e4;
+cv_size = 150;
 
 % get data
 % make sure data is properly formatted
@@ -20,8 +21,6 @@ X = preprocess(X);
 Y = preprocess(Y);
 disp('pre-processed data');
 
-% set aside cross validation data
-
 % polynomials to a power
 pX = map_features(X, power);
 
@@ -29,6 +28,10 @@ pX = map_features(X, power);
 pX = [ones(size(pX, 1), 1) pX];
 n = size(pX, 2);
 disp('mapped data');
+
+% set aside cross-validation data
+[pX, Y, cvX, cvY] = get_cross_validation(pX, Y, cv_size);
+disp('generated cross-validation set');
 
 % init values
 corner_a = ones(n , 1);
