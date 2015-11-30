@@ -71,11 +71,11 @@ def generate_moves(board, x_input, o_input, x_output, o_output,	fx_input, fo_inp
 
 if __name__ == "__main__":
 	# blank board with lists starting with nothing
-	x_file_input = open('optimal-input-x.txt', 'w');
-	o_file_input = open('optimal-input-o.txt', 'w');
+	x_file_input = open('all-input-x.txt', 'w');
+	o_file_input = open('all-input-o.txt', 'w');
 
-	x_file_output = open('optimal-output-x.txt', 'w');
-	o_file_output = open('optimal-output-o.txt', 'w');
+	x_file_output = open('all-output-x.txt', 'w');
+	o_file_output = open('all-output-o.txt', 'w');
 
 	generate_moves([0, 0, 0, 0, 0, 0, 0, 0, 0], [], [], [], [], x_file_input, o_file_input, x_file_output, o_file_output);
 
