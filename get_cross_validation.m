@@ -15,11 +15,11 @@ function [pX, pY, cvX, cvY] = get_cross_validation(X, Y, p)
         
         % add row and remove it from X
         cvX(ii, :) = pX(row, :);
-        pX = [pX(1:row-1, :); pX(row+1:end, :)];
+        pX(row, :) = [];
         
         % add row and remove it from Y
         cvY(ii, :) = pY(row, :);
-        pY = [pY(1:row-1, :); pY(row+1:end, :)];
+        pY(row, :) = [];
         
         % one less row in original dataset
         m = m - 1;
