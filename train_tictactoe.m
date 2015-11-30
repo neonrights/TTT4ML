@@ -31,97 +31,47 @@ disp('mapped data');
 
 % set aside cross-validation data
 %[pX, Y, cvX, cvY] = get_cross_validation(pX, Y, cv_size);
+%cvY = [cvY(:, 1), cvY(:, 2), cvY(:, 5)];
 %disp('generated cross-validation set');
 
 % init values
-corner_a = ones(n , 1);
-corner_Y = Y(:, 1);
-corner_iter = 0;
-corner_bias = 0;
-
-side_a = ones(n, 1);
-side_Y = Y(:, 2);
-side_iter = 0;
-side_bias = 0;
-
-middle_a = ones(n, 1);
-middle_Y = Y(:, 5);
-middle_iter = 0;
-middle_bias = 0;
+a = ones(n , 3);
+pY = [Y(:, 1), Y(:, 2), Y(:, 5)];
+iter = zeros(1, 3);
+bias = zeros(1, 3);
+cost = zeros(1, 3);
+grad = zeros(n, 3);
+%cv = zeros(1, 3);
 
 % get min value for three equations
-% train corner
-[corner_cost, corner_grad] = cost_function(corner_a, pX, corner_Y, corner_bias);
-last_cost = corner_cost + 1;
+for ii = 1:3
+    [cost(ii), grad(:, ii)] = cost_function(a(:, ii), pX, pY(:, ii), bias(ii));
+    last_cost = cost(ii) + 2 * threshold;
 
-% change of cost is below threshold
-while abs(corner_cost - last_cost) > threshold && corner_iter < max_iter
-    % alter a values
-    corner_a = corner_a - corner_grad * step;
-    last_cost = corner_cost;
-    
-    % update values
-    [corner_cost, corner_grad] = cost_function(corner_a, pX, corner_Y, corner_bias);
-    
-    corner_iter = corner_iter + 1;
+    % change of cost is below threshold
+    while abs(cost(ii) - last_cost) > threshold && iter(ii) < max_iter
+        % alter a values
+        a(:, ii) = a(:, ii) - grad(:, ii) * step;
+        last_cost = cost(ii);
+
+        % update values
+        [cost(ii), grad(:, ii)] = cost_function(a(:, ii), pX, pY(:, ii), bias(ii));
+
+        iter(ii) = iter(ii) + 1;
+    end
+
+    % calculate cross-validation cost
+    %[cv(ii), ~] = cost_function(a, cvX, cvY(:, ii), 0);
+
+    if ii == 1
+        disp('final corner values');
+    elseif ii == 2
+        disp('final side values');
+    else
+        disp('final middle values');
+    end
+    disp(cost(ii));
+    disp(iter(ii));
+    disp(sum(abs(grad(:, ii))) / n);
+    %disp(cv(ii));
 end
-
-% calculate cross-validation cost
-[corner_cv, ~] = cost_function(corner_a, cvX, cvY(:, 1), 0);
-
-disp('final corner values');
-disp(corner_cost);
-disp(corner_iter);
-disp(sum(abs(corner_grad)) / n);
-disp(corner_cv);
-
-% train side
-%[side_cost, side_grad] = cost_function(side_a, pX, side_Y, side_bias);
-last_cost = side_cost + 1;
-
-% change of cost is below threshold
-while abs(side_cost - last_cost) > threshold && side_iter < max_iter
-    % alter a values
-    side_a = side_a - side_grad * step;
-    last_cost = side_cost;
-    
-    % update values
-    [side_cost, side_grad] = cost_function(side_a, pX, side_Y, side_bias);
-    
-    side_iter = side_iter + 1;
-end
-
-% calculate cross-validation cost
-%[side_cv, ~] = cost_function(side_a, cvX, cvY(:, 2), 0);
-
-disp('final side values');
-disp(side_cost);
-disp(side_iter);
-disp(sum(abs(side_grad)) / n);
-disp(side_cv);
-
-
-% train middle
-[middle_cost, middle_grad] = cost_function(middle_a, pX, middle_Y, middle_bias);
-last_cost = middle_cost + 1;
-
-% change of cost is below threshold
-while abs(middle_cost - last_cost) > threshold && middle_iter < max_iter
-    % alter a values
-    middle_a = middle_a - middle_grad * step;
-    last_cost = middle_cost;
-    
-    % update values
-    [middle_cost, middle_grad] = cost_function(middle_a, pX, middle_Y, middle_bias);
-    
-    middle_iter = middle_iter + 1;
-end
-
-% calculate cross-validation cost
-%[middle_cv, ~] = cost_function(middle_a, cvX, cvY(:, 5), 0);
-
-disp('final middle values');
-disp(middle_cost);
-disp(middle_iter);
-disp(sum(abs(middle_grad)) / n);
-disp(middle_cv);
